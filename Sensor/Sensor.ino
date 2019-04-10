@@ -31,4 +31,5 @@ void loop(){
   if (QS == true){                       // Bandera del Quantified Self es verdadera cuando el Arduino busca un pulso del corazon
     QS = false;                          // Reset a la bandera del Quantified Self 
   }
+ delay(50);
 }
