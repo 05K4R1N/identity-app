@@ -1,3 +1,16 @@
+const http = require('http');
+const express = require('express');
+const socketIO = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIO.listen(server);
+
+app.use(express.static(__dirname + '/public'))
+server.listen(3000, function(){
+	console.log("SERVIDOR  escuchabndo en el puerto 3000");
+});
+
 const Serialport = require('serialport');
 const Readline = Serialport.parsers.Readline;
 
@@ -12,7 +25,7 @@ parser.on('open', function(){
 });
 
 parser.on('data', function(data){
-	console.log(data);
+	console.log(parseInt(data) + " Latidos por minuto");
 });
 
 port.on('error', function(){
