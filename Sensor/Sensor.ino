@@ -26,10 +26,10 @@ void loop(){
  else{
     digitalWrite(13, LOW);
  }  
-   Serial.print("BPM = ");  Serial.println(BPM); //Habilitar estas linea para ver BPM en el monitor serial pero deshabilitar la siguiente
+   Serial.print("Pulsos por Minutos = ");  Serial.println(BPM); //Habilitar estas linea para ver BPM en el monitor serial pero deshabilitar la siguiente
    //Serial.println(pulso);                          // envia el valor del pulso por el puerto serie  (desabilitarla si habilita la anterior linea)
   if (QS == true){                       // Bandera del Quantified Self es verdadera cuando el Arduino busca un pulso del corazon
     QS = false;                          // Reset a la bandera del Quantified Self 
   }
- delay(50);
+ delay(500);
 }

@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/05K4R1N/Ritmo-Cardiaco#readme",
   "dependencies": {
-    "serialport": "^7.1.4"
+    "express": "^4.16.4",
+    "serialport": "^7.1.4",
+    "socket.io": "^2.2.0"
   }
 }

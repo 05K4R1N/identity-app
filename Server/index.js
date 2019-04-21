@@ -6,7 +6,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO.listen(server);
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'));
+
 server.listen(3000, function(){
 	console.log("SERVIDOR  escuchabndo en el puerto 3000");
 });
@@ -25,7 +26,10 @@ parser.on('open', function(){
 });
 
 parser.on('data', function(data){
-	console.log(parseInt(data) + " Latidos por minuto");
+	//console.log(parseInt(data) + " Latidos por minuto");
+	let temp = parseInt(data);
+	io.emit("temp", data);
+
 });
 
 port.on('error', function(){
