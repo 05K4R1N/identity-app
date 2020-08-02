@@ -1,42 +1,25 @@
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
-
-void setup() {
-  Serial.begin(115200);
-
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;);
-  }
-  /*delay(2000);
-  display.clearDisplay();
-
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 10);
-  // Display static text
-  display.println("INICIANDO...");
-  display.display(); */
+#include <U8glib.h>
+//Initialize display.
+U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE | U8G_I2C_OPT_DEV_0);
+void setup(void)
+{
+    //Set font.
+    u8g.setFont(u8g_font_unifont);
 }
-
-void loop() {
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0,10);
-  for(int i = 0; i < 100; i++) {
-    display.println("INICIANDO ");
-    display.setCursor(0,20);
-    display.println(i+1);
-    display.setCursor(0,30);
-  }
-  display.display();
-  delay(50);
+void loop(void)
+{
+    u8g.firstPage();
+    do {
+        u8g.drawStr(2,15,"Vel = ");
+        draw();
+    } while (u8g.nextPage());
+    //Delay before repeating the loop.
+    delay(3000);
+}
+void draw(void)
+{
+    
+    u8g.setPrintPos(55, 15);
+    u8g.print(0);
+    u8g.drawStr(85, 15, "km/h");
 }
