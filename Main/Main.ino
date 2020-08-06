@@ -21,7 +21,11 @@ void setup(void)
 void loop(void)
 {
     int pulso = analogRead(A0);
+    if(pulso < 480 || pulso > 680 ){
+      BPM = 0;
+    }
     //Serial.print("Pulsos por Minutos = ");  Serial.println(BPM);
+    Serial.println(pulso);
     if (QS == true){                       // Bandera del Quantified Self es verdadera cuando el Arduino busca un pulso del corazon
       QS = false;                          // Reset a la bandera del Quantified Self 
     }
@@ -29,7 +33,8 @@ void loop(void)
     do {
         draw();
     } while (u8g.nextPage());
-    delay(1000);
+    delay(100);  
+    
 }
 void draw(void)
 {
