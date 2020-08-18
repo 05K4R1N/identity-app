@@ -1,8 +1,12 @@
-#include <Arduino.h>
-#include <U8glib.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-//Initialize display.
-U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE | U8G_I2C_OPT_DEV_0);
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 int pulsePin = 0;                   // Sensor de Pulso conectado al puerto A0
 // Estas variables son volatiles porque son usadas durante la rutina de interrupcion en la segunda Pestaña
@@ -12,46 +16,43 @@ volatile int IBI = 600;             // tiempo entre pulsaciones
 volatile boolean Pulse = false;     // Verdadero cuando la onda de pulsos es alta, falso cuando es Baja
 volatile boolean QS = false;        // Verdadero cuando el Arduino Busca un pulso del Corazon
 
-void setup(void)
-{
-    u8g.setFont(u8g_font_unifont);
-    Serial.begin(9600);                // Puerto serial configurado a 9600 Baudios
-    interruptSetup();                  // Configura la interrucion para leer el sensor de pulsos cada 2mS  
-}
-void loop(void)
-{
-    int pulso = analogRead(A0);
-    if(pulso < 480 || pulso > 680 ){
-      BPM = 0;
-    }
-    //Serial.print("Pulsos por Minutos = ");  Serial.println(BPM);
-    Serial.println(pulso);
-    if (QS == true){                       // Bandera del Quantified Self es verdadera cuando el Arduino busca un pulso del corazon
-      QS = false;                          // Reset a la bandera del Quantified Self 
-    }
-    u8g.firstPage();
-    do {
-        draw();
-    } while (u8g.nextPage());
-    delay(100);  
-    
-}
-void draw(void)
-{
-    u8g.setPrintPos(2, 15);
-    u8g.print("Vel=");
-    u8g.setPrintPos(2, 30);
-    u8g.print("Pulso=");
-    
-    //velocidad
-    u8g.setPrintPos(60, 15);
-    u8g.print(0);
-    u8g.setPrintPos(86, 15);
-    u8g.print("km/h");
+void setup() {
+  Serial.begin(9600);
+  interruptSetup();                  // Configura la interrucion para leer el sensor de pulsos cada 2mS  
 
-    //pulso
-    u8g.setPrintPos(60, 30);
-    u8g.print(BPM);
-    u8g.setPrintPos(86, 30);
-    u8g.print("lat/m");
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;);
+  }
+  delay(2000);
+  display.clearDisplay();
+
+  
+}
+
+void loop() {
+  int pulso = analogRead(A0);
+  if(pulso < 480 || pulso > 680 ){
+    BPM = 0;
+  }
+  if (QS == true){                    // Bandera del Quantified Self es verdadera cuando el Arduino busca un pulso del corazon
+    QS = false;                       // Reset a la bandera del Quantified Self 
+  }
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 10);
+  display.println("V=");
+  display.setCursor(40,10);
+  display.println(0);
+  display.setCursor(75,10);
+  display.println("km/h");
+  display.setCursor(0, 25);
+  display.println("P= ");
+  display.setCursor(30, 25);
+  display.println(BPM);
+  display.setCursor(68, 25);
+  display.println("L/min");
+  display.display(); 
+  delay(2000);
 }
