@@ -1,58 +1,65 @@
-#include <Wire.h>
-#include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#define OLED_Address 0x3C // 0x3C device address of I2C OLED. Few other OLED has 0x3D
+Adafruit_SSD1306 oled(128, 64); // create our screen object setting resolution to 128x64
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
-
-int pulsePin = 0;                   // Sensor de Pulso conectado al puerto A0
-// Estas variables son volatiles porque son usadas durante la rutina de interrupcion en la segunda Pestaña
-volatile int BPM;                   // Pulsaciones por minuto
-volatile int Signal;                // Entrada de datos del sensor de pulsos
-volatile int IBI = 600;             // tiempo entre pulsaciones
-volatile boolean Pulse = false;     // Verdadero cuando la onda de pulsos es alta, falso cuando es Baja
-volatile boolean QS = false;        // Verdadero cuando el Arduino Busca un pulso del Corazon
+int a = 0;
+int lasta = 0;
+int lastb = 0;
+int LastTime = 0;
+int ThisTime;
+bool BPMTiming = false;
+bool BeatComplete = false;
+int BPM = 0;
+#define UpperThreshold 560
+#define LowerThreshold 530
 
 void setup() {
-  Serial.begin(9600);
-  interruptSetup();                  // Configura la interrucion para leer el sensor de pulsos cada 2mS  
-
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;);
-  }
-  delay(2000);
-  display.clearDisplay();
-
-  
+  oled.begin(SSD1306_SWITCHCAPVCC, OLED_Address);
+  oled.clearDisplay();
+  oled.setTextSize(2);
 }
 
 void loop() {
-  int pulso = analogRead(A0);
-  if(pulso < 480 || pulso > 680 ){
-    BPM = 0;
+  if (a > 127)
+  {
+    oled.clearDisplay();
+    a = 0;
+    lasta = a;
   }
-  if (QS == true){                    // Bandera del Quantified Self es verdadera cuando el Arduino busca un pulso del corazon
-    QS = false;                       // Reset a la bandera del Quantified Self 
+
+  ThisTime = millis();
+  int value = analogRead(0);
+  oled.setTextColor(WHITE);
+  int b = 60 - (value / 16);
+  oled.writeLine(lasta, lastb, a, b, WHITE);
+  lastb = b;
+  lasta = a;
+
+  if (value > UpperThreshold)
+  {
+    if (BeatComplete)
+    {
+      BPM = ThisTime - LastTime;
+      BPM = int(60 / (float(BPM) / 1000));
+      BPMTiming = false;
+      BeatComplete = false;
+    }
+    if (BPMTiming == false)
+    {
+      LastTime = millis();
+      BPMTiming = true;
+    }
   }
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 10);
-  display.println("V=");
-  display.setCursor(40,10);
-  display.println(0);
-  display.setCursor(75,10);
-  display.println("km/h");
-  display.setCursor(0, 25);
-  display.println("P= ");
-  display.setCursor(30, 25);
-  display.println(BPM);
-  display.setCursor(68, 25);
-  display.println("L/min");
-  display.display(); 
-  delay(2000);
+  if ((value < LowerThreshold) & (BPMTiming)) {
+    BeatComplete = true;
+
+    oled.writeFillRect(0, 50, 128, 16, BLACK);
+    oled.setTextSize(1);
+    oled.setCursor(0, 50);
+    oled.print("BPM=");
+    oled.print(BPM);
+
+    oled.display();
+    a++;
+  }
 }
