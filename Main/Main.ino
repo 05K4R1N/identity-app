@@ -65,15 +65,19 @@ const unsigned char PROGMEM corazon [] = {
 };
 
 void setup(void) {
-Serial.begin(9600);
-display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  //Inicializamos el display OLED en la direccion I2C 0x3C 
-display.clearDisplay();                     //Limpiamos el buffer y ponemos la pantalla en negro
-display.display();                          //Inicializamos la pantalla
-display.setTextWrap(false);                 //Impedimos que el texto se salga de la pantalla
-display.setTextColor(WHITE);                //Establecemos el color del texto
-display.setTextSize(1.5);                     //Establecemos el tamaño del texto
-display.clearDisplay();                     //Limpiamos el buffer y ponemos la pantalla en negro
-interruptSetup();                           //Llamamos a la funcion interruptSetup()
+  Serial.begin(9600);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  //Inicializamos el display OLED en la direccion I2C 0x3C 
+  display.clearDisplay();                     //Limpiamos el buffer y ponemos la pantalla en negro
+  display.display();                          //Inicializamos la pantalla
+  display.setTextWrap(false);                 //Impedimos que el texto se salga de la pantalla
+  display.setTextColor(WHITE);                //Establecemos el color del texto
+  display.setTextSize(3);                     //Establecemos el tamaño del texto
+  display.setCursor(0,0);
+  display.print("05K4R1N");
+  display.display();
+  display.clearDisplay();                     //Limpiamos el buffer y ponemos la pantalla en negro
+  display.setTextSize(1.5);
+  interruptSetup();                           //Llamamos a la funcion interruptSetup()
 }
 
 void loop(void) {
