@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import Card from '../UI/Card/Card';
 import { Row, Col } from 'react-bootstrap';
+
+import Card from '../UI/Card/Card';
+import ProfileData from './ProfileData';
 
 const PROFILE_DATA = [
     {
@@ -39,7 +41,7 @@ const Profile = (props) => {
         <Card className="profile">
             <Row className="justify-content-md-center">
                 <Col xs lg="10">
-                    test
+                    <ProfileData data = {dataProfile}/>
                 </Col>
             </Row>
         </Card>
