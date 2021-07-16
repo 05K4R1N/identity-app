@@ -6,9 +6,8 @@ const ProfileData = (props) => {
     const information = props.data;
     let identityData = information.map((info) => {
         return (
-            <div>
-                <strong>{info.label}:</strong>
-                <p>{info.value}</p>
+            <div key = {info.id}>
+                <p><span>{info.label}:</span> {info.value}</p>
             </div>
         );
     })

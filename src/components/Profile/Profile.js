@@ -6,30 +6,37 @@ import ProfileData from './ProfileData';
 
 const PROFILE_DATA = [
     {
+      "id":"1",
       "label":"Apellido(s)",
       "value":"Gamboa Acho"
     },
     {
+      "id":"2",
       "label":"Nombre(s)",
       "value":"Oscar Rolando"
     },
     {
+      "id":"3",
       "label":"Nacido(a)",
       "value":"05/11/1990",
     },
     {
+      "id":"4",
       "label":"En",
       "value":"Cochabamba - Cercado - Cochabamba"
     },
     {
+      "id":"5",
       "label":"Estado Civil",
       "value":"Soltero",
     },
     {
+      "id":"6",
       "label":"Profesion",
       "value":"Ing. de Sistemas"
     },
     {
+      "id":"7",
       "label":"Domicilio",
       "value":"C. Jordan Pje. Loa #316"
     }
