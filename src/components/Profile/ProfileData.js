@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Card from '../UI/Card/Card';
+import Box from '../UI/Box/Box';
 
 const ProfileData = (props) => {
     const information = props.data;
@@ -12,9 +12,9 @@ const ProfileData = (props) => {
         );
     })
     return(
-        <Card>
+        <Box>
           {identityData}  
-        </Card>
+        </Box>
     )
 }
 

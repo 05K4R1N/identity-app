@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import Card from '../UI/Card/Card';
+import Card from '../UI/Box/Box';
 import ProfileData from './ProfileData';
 
 const PROFILE_DATA = [
