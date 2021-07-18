@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import Card from '../UI/Box/Box';
 import ProfileData from './ProfileData';
 
-const PROFILE_DATA = [
+const IDENTITY_INFO = [
     {
       "id":"1",
       "label":"Apellido(s)",
@@ -43,12 +43,12 @@ const PROFILE_DATA = [
 ];
 
 const Profile = (props) => {
-    const [dataProfile, setDataProfile] = useState(PROFILE_DATA);
+    const [idInfo, setIdInfo] = useState(IDENTITY_INFO);
     return(
         <Card className="profile">
             <Row className="justify-content-md-center">
                 <Col xs lg="10">
-                    <ProfileData data = {dataProfile}/>
+                    <ProfileData data = {idInfo}/>
                 </Col>
             </Row>
         </Card>
