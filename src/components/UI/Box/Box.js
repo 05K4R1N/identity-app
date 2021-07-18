@@ -17,6 +17,16 @@ const StyledCard = styled(Card)`
             } 
         }
     }
+    @media (min-width: 481px) and (max-width: 767px) {
+        & .data {
+            font-size: 20px;
+        }
+    }
+    @media (max-width: 480px) {
+        & .data {
+            font-size: 15px;
+        }
+    }
 `;
  
 const Box = (props) => {
