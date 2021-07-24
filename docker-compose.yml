@@ -4,4 +4,4 @@ services:
     identity:
         image: 05k4r1n/identity:latest
         ports:
-            - "80.80"
+            - "80:80"
