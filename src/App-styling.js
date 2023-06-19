@@ -18,7 +18,7 @@ export const Microphone = styled.div`
         font-size: 12rem;
         color: #fff;
     }
-    & .transcription {
+    & .transcription, & .response{
         margin: 40px;
         color: red;
         font-size: 3rem;
